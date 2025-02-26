@@ -1,0 +1,45 @@
+
+
+This project is about programming a function that returns a line read from a file descriptor.
+
+proto: char *get_next_line(int fd)
+turn-in files: get_next_line.c, get_next_line_utils.c, get_next_line.h
+return: Read line:  correct behavior
+		NULL: there is nothing else to read, or an error occurred
+
+allowed functions: malloc, free, read
+forbidden: libft, lseek(), global variables 
+
+
+• Repeated calls (e.g., using a loop) to your get_next_line() function should let you read the text 
+  file pointed to by the file descriptor, one line at a time.
+• Make sure that your function works as expected both when reading a file and when reading from the standard input.
+• Please note that the returned line should include the terminating \n character, except if the end of file was reached and does not end with a \n character.
+• You will compile your code as follows (a buffer size of 42 is used as an example): 
+  cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 <files>.c
+• GNL has an undefined behavior if the file pointed to by the fd changed since the last call whereas read() didn’t reach the end of file.
+• GNL has an undefined behavior when reading a binary file. However, you can implement a logical way to handle this behavior if you want to.
+• Make GNL work for BUFFER_SIZE=9999 or 1 or +1m
+• Buffer size & line size can be =/= 
+• fd not only regular files
+
+-- BONUS
+
+• GNL w/ 1 static variable 
+• GNL, multiple fd at the same time 
+  For example, if you can read from the file descriptors 3, 4 and 5, you should be able to read from a different fd per call without losing the reading thread of each file descriptor or returning a line from another fd.
+  It means that you should be able to call get_next_line() to read from fd 3, then fd 4, then 5, then once again 3, once again 4, and so forth
+
+
+
+
+-- DRAFT PLAN 
+
+• Read lit autant de nbytes demandés, si le mm fichier est relu le curseur reste positionné
+là où le dernier read a été fait donc => stash
+• verif dans cette stash si on passe à une autre ligne 
+	si c le cas, on clear la stash jusqu'au saut de ligne
+	mais avant on stock dans une char pour pouvoir la retourner dans GNL
+
+
+  cc -Wall -Wextra -Werror -D BUFFER_SIZE=2 get_next_line.c get_next_line_utils.c main.c 
